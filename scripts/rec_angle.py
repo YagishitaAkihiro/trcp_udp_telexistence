@@ -15,9 +15,18 @@ from contextlib import closing
 
 def worker(angle_list):
     if len(angle_list) == 24:
-       print (angle_list)
-#       joint = []
-#       robot.setJointAngles(angle_list,0.5)
+#       print (angle_list)
+       body_joint = [0.0]#[float(angle_list[1])]
+       head_joint = [float(angle_list[2]),float(angle_list[3])]
+       rarm_joint = [float(angle_list[4]),float(angle_list[5]),float(angle_list[6]),
+                     float(angle_list[7]),float(angle_list[8]),float(angle_list[9])]
+       larm_joint = [float(angle_list[14]),float(angle_list[15]),float(angle_list[16]),
+                     float(angle_list[17]),float(angle_list[18]),float(angle_list[19])]
+#       print (head_joint)
+#       print (rarm_joint)
+#       print (larm_joint)
+#       ros.set_joint_angles_deg("rarm",rarm_joint,2.0,wait=False)
+       ros.set_joint_angles_deg("larm",larm_joint,2.0,wait=False)
     else:
        print ("error")
        pass 
@@ -40,7 +49,7 @@ def main(host,port,bufsize):
 
 if __name__ == '__main__':
 #-------------------------------------------initial_setting------------------------------------------
-    """
+#    """
     parser = argparse.ArgumentParser(description='NEXTAGE Open command line interpreters')
     parser.add_argument('--host', help='corba name server hostname')
     parser.add_argument('--port', help='corba name server port number')
@@ -63,8 +72,8 @@ if __name__ == '__main__':
     robot = nxc = nextage_client.NextageClient()
     robot.init(robotname=args.robot, url=args.modelfile)
     ros = ROS_Client()
-    """
-    host = '10.254.21.24'
+#    """
+    host = '10.254.21.23'
     port = 4000
     bufsize = 4096
 #--------------------------------------------end_initial_setting------------------------------------------
