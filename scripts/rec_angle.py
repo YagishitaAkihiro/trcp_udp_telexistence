@@ -1,26 +1,28 @@
 #!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
+from __future__ import print_function
 from nextage_ros_bridge import nextage_client
+
 from hrpsys import rtm
 from hironx_ros_bridge.ros_client import ROS_Client
 import argparse
 import rospy
 
-from __future__ import print_function
+#from __future__ import print_function
 import socket
 from contextlib import closing
 
-class Class(self,host,port,bufsize):
+def main(host,port,bufsize):
       hosts = host
       ports = port
       bufsizes = bufsize
       
-      sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM))
+      sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
       with closing(sock):
         sock.bind((hosts,ports))
         while not rospy.is_shutdown():
-          print (sock.recv(bufsize))
+          print (sock.recv(bufsizes))
       return
 
 if __name__ == '__main__':
@@ -48,9 +50,9 @@ if __name__ == '__main__':
     robot.init(robotname=args.robot, url=args.modelfile)
     ros = ROS_Client()
     
-    host = '127.0.0.1'
+    host = '10.254.21.23'
     port = 4000
     bufsize = 4096
 #--------------------------------------------end_initial_setting------------------------------------------
 #   主処理
-    Tele(host,port,bufsize)
+    main(host,port,bufsize)
