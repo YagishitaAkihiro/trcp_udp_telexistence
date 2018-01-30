@@ -1,0 +1,17 @@
+２つのUbuntu(Opereator/Worker)をUDPで通信(nodeが被るため、masterで繋げないから)
+
+[処理手順]
+<Ope>
+Perception_neuron→T	F→hrpsp_sim&moveit
+↓Pub(send UDP)
+joint_angles
+↓Sub(rec UDP)
+<Work>
+sub_angle→hironx(ros.set_angle)⇒作業
+
+[作成及びリビルドするもの]
+<Ope>
+・simulatorから現在の角度を取得する
+・UDPで行列でもいいから送る。
+<work>
+・受け取った
