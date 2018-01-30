@@ -31,6 +31,6 @@ def main(host,port):
 
 if __name__ == '__main__':
   rospy.init_node("udp_send")
-  host = "10.254.21.24" #localhost'127.0.0.1'
+  host = "10.254.21.23" #localhost'127.0.0.1'
   port = 4000
   main(host,port)
