@@ -26,7 +26,7 @@ class Tele():
           return Vector3(x=self.eul[0],y=self.eul[1],z=self.eul[2])
 
       def __init__(self):
-          pub = rospy.Publisher("angle_data",string,queue_size=1)
+          self.pub = rospy.Publisher("angle_data",String,queue_size=1)
           robot.goInitial()
           listener =tf.TransformListener()
           listener2=tf.TransformListener()
@@ -84,8 +84,8 @@ class Tele():
                 N_head_d = self.q2e(h_rot2)
                 N_head = [N_head_d.y,N_head_d.x]
 
-                HeaD= [H_head[1]-initial_head[1],
-                       H_head[0]-initial_head[0]]
+                HeaD= [N_head[1]-initial_head[1],
+                       N_head[0]-initial_head[0]]
  
 #----------------------------------------------------
                 if -0.292 > LTP[0]: #前後
@@ -129,19 +129,19 @@ class Tele():
                      HeaD[1] = 0.3
 #---------------------------------------------------------------------------------
                 global ini_ang
-#                robot.setTargetPose("larm",LTP, ini_ang,0.3)
-#                robot.setTargetPose("rarm",RTP, ini_ang,0.3)
-                ros.set_pose("rarm",RTP,ini_ang,0.3)
-                ros.set_pose("larm",LTP,ini_ang,0.3)
+                robot.setTargetPose("larm",LTP, ini_ang,0.3)
+                robot.setTargetPose("rarm",RTP, ini_ang,0.3)
+#                ros.set_pose("rarm",RTP,ini_ang,0.3)
+#                ros.set_pose("larm",LTP,ini_ang,0.3)
                 ros.set_joint_angles_rad("head",[HeaD[0],HeaD[1]],duration=0.3,wait=False) 
                 rospy.sleep(0.3)
                 #ローパスフィルター_アップデート
                 r_cur_p = robot.getCurrentPosition("RARM_JOINT5")
                 l_cur_p = robot.getCurrentPosition("LARM_JOINT5")
                 low_filter = [l_cur_p[0], l_cur_p[1], l_cur_p[2], r_cur_p[0], r_cur_p[1], r_cur_p[2]]
-                base_head = [HeaD[0],Head[1]]
-                a_data = robot.getJointAngles()
-                pub.publish(a_data)
+                base_head = [HeaD[0],HeaD[1]]
+                a_data = str(robot.getJointAngles())
+                self.pub.publish(a_data)
 if __name__ == '__main__':
 
 #-------------------------------------------initial_setting------------------------------------------
