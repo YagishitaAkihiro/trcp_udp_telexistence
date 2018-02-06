@@ -26,7 +26,7 @@ def worker(angle_list):
 #       print (rarm_joint)
 #       print (larm_joint)
 #       ros.set_joint_angles_deg("rarm",rarm_joint,2.0,wait=False)
-       ros.set_joint_angles_deg("larm",larm_joint,2.0,wait=False)
+       ros.set_joint_angles_deg("larm",larm_joint,1.0,wait=False)
     else:
        print ("error")
        pass 
