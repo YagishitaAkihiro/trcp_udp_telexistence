@@ -27,6 +27,7 @@ def worker(angle_list):
 #       print (larm_joint)
 #       ros.set_joint_angles_deg("rarm",rarm_joint,2.0,wait=False)
        ros.set_joint_angles_deg("larm",larm_joint,1.0,wait=False)
+       ros.set_joint_angles_deg("head",[15,15],1.5,wait=False)
     else:
        print ("error")
        pass 
@@ -43,7 +44,7 @@ def main(host,port,bufsize):
           ang_list = sock.recv(bufsizes).replace('[','')
           ang_list = ang_list.replace(']','')
           ang_list = ang_list.split(",")
-          rospy.loginfo("start task")
+#          rospy.loginfo("start task")
 #          print (ang_list)
           worker(ang_list)
       return
