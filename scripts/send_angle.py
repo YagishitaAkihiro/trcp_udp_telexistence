@@ -24,7 +24,7 @@ def main(host,port):
   with closing(sock):
     while not rospy.is_shutdown():
       global angle_data
-#      print (angle_data)
+      print (angle_data)
       sock.sendto(angle_data, (hosts, ports))
       time.sleep(1)
   return

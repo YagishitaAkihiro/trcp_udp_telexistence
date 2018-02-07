@@ -13,6 +13,8 @@ import tf
 from geometry_msgs.msg import Vector3
 from std_msgs.msg import String
 
+from std_msgs.msg import String, MultiArrayLayout, MultiArrayDimension, Float32MultiArray
+
 #(left_x,left_y,left_z,right_x,right_y,right_z)
 ini_p = (0.3255, 0.1823, 0.0746, 0.3255, -0.1823, 0.0746)
 ini_f = [-0.6,   0.0,   -100.0,  0.6,     0.0,   -100.0]
@@ -20,13 +22,19 @@ ini_ang = [0.0, -1.6, -0.05] #タプルにせねば。
 
 low_filter = [-0.6, 0.0, -100.0, 0.6, 0.0, -100.0]#ローパスフィルター用初期値
 
+p_data = Float32MultiArray()
+
+p_data.data = [0.0,0.0,0.0,
+               0.0,0.0,0.0]
+
 class Tele():
       def q2e(self,rot):
           self.eul = tf.transformations.euler_from_quaternion((rot[0],rot[1],rot[2],rot[3]))
           return Vector3(x=self.eul[0],y=self.eul[1],z=self.eul[2])
 
       def __init__(self):
-          self.pub = rospy.Publisher("angle_data",String,queue_size=1)
+          self.pub_p=rospy.Publisher("pose_data",Float32MultiArray,queue_size=1)
+          self.pub  =rospy.Publisher("angle_data",String , queue_size=1)
           robot.goInitial()
           listener =tf.TransformListener()
           listener2=tf.TransformListener()
@@ -80,18 +88,21 @@ class Tele():
                 RTP = [round((ini_p[3]+R_dis[0]+low_filter[3])/2,2),
                        round((ini_p[4]+R_dis[1]+low_filter[4])/2,2),
                        round((ini_p[5]+R_dis[2]+low_filter[5])/2,2)]
+                p_data.data = [LTP[0],LTP[1],1.1*LTP[2],RTP[0],RTP[1],1.1*RTP[2]]
+                self.pub_p.publish(p_data)
 
                 N_head_d = self.q2e(h_rot2)
                 N_head = [N_head_d.y,N_head_d.x]
 
-                HeaD= [N_head[1]-initial_head[1],
-                       N_head[0]-initial_head[0]]
+                HeaD= [N_head[0]-initial_head[0],
+                       N_head[1]-initial_head[1]]
  
 #----------------------------------------------------
                 if -0.292 > LTP[0]: #前後
                   LTP[0] =-0.292
-                elif LTP[0] > 0.523:
-                  LTP[0] =0.523
+                elif LTP[0] > 0.623:
+                  LTP[0] =0.623
+
 
                 if -0.150 > LTP[1]:#左右
                   LTP[1] = -0.150
@@ -105,8 +116,8 @@ class Tele():
 
                 if -0.292 > RTP[0]:#前後
                    RTP[0] = 0.292
-                elif RTP[0] > 0.523:
-                   RTP[0] = 0.523
+                elif RTP[0] > 0.623:
+                   RTP[0] = 0.623
 
                 if 0.150 < RTP[1]:#左右
                    RTP[1] = 0.150
@@ -129,10 +140,8 @@ class Tele():
                      HeaD[1] = 0.3
 #---------------------------------------------------------------------------------
                 global ini_ang
-                robot.setTargetPose("larm",LTP, ini_ang,0.3)
-                robot.setTargetPose("rarm",RTP, ini_ang,0.3)
-#                ros.set_pose("rarm",RTP,ini_ang,0.3)
-#                ros.set_pose("larm",LTP,ini_ang,0.3)
+                robot.setTargetPose("larm",LTP, ini_ang,0.1)
+                robot.setTargetPose("rarm",RTP, ini_ang,0.1)
                 ros.set_joint_angles_rad("head",[HeaD[0],HeaD[1]],duration=0.3,wait=False) 
                 rospy.sleep(0.3)
                 #ローパスフィルター_アップデート
