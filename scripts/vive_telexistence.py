@@ -43,37 +43,28 @@ class Tele():
           now = rospy.Time(0)
           rospy.loginfo("waiting hands and head tf")
           try:
-              """
-              listener.waitForTransform("/WorldPerceptionNeuron", "/LeftHand", now, rospy.Duration(1.0))
-              listener.waitForTransform("/WorldPerceptionNeuron", "/RightHand",now, rospy.Duration(1.0))
-              listener.waitForTransform("/WorldPerceptionNeuron", "/Head", now, rospy.Duration(1.0))
-              (l_trans,l_rot) = listener.lookupTransform('/WorldPerceptionNeuron', '/LeftHand', now)
-              (r_trans,r_rot) = listener.lookupTransform('/WorldPerceptionNeuron', '/RightHand', now)
-              (h_trans,h_rot) = listener.lookupTransform("/WorldPerceptionNeuron", "/Head", now)
-
-              """
-              listener.waitForTransform("/Spine", "/LeftHand", now, rospy.Duration(1.0))
-              listener.waitForTransform("/Spine", "/RightHand",now, rospy.Duration(1.0))
-              listener.waitForTransform("/Spine", "/Head", now, rospy.Duration(1.0))
-              (l_trans,l_rot) = listener.lookupTransform('/Spine', '/LeftHand', now)
-              (r_trans,r_rot) = listener.lookupTransform('/Spine', '/RightHand', now)
-              (h_trans,h_rot) = listener.lookupTransform("/Spine", "/Head", now)
+              listener.waitForTransform("/LHR_23815562", "/LHR_FF4B1941", now, rospy.Duration(1.0))
+              listener.waitForTransform("/LHR_23815562", "/LHR_F5EB3B42",now, rospy.Duration(1.0))
+#              listener.waitForTransform("/LHR_23815562", "/Head", now, rospy.Duration(1.0))#vive_tracker導入予定
+              (l_trans,l_rot) = listener.lookupTransform("/LHR_23815562", "/LHR_FF4B1941", now)
+              (r_trans,r_rot) = listener.lookupTransform("/LHR_23815562", "/LHR_F5EB3B42", now)
+#              (h_trans,h_rot) = listener.lookupTransform("/Spine", "/Head", now)
                
           except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
               rospy.loginfo("TF not broadcast")
           rospy.loginfo("complete")
           
-          initial_left = (round(l_trans[2],2),round(l_trans[0],2),round(l_trans[1],2))
-          initial_right= (round(r_trans[2],2),round(r_trans[0],2),round(r_trans[1],2))
+          initial_left = (round(l_trans[2],2),round(l_trans[1],2),round(l_trans[0],2))
+          initial_right= (round(r_trans[2],2),round(r_trans[1],2),round(r_trans[0],2))
 
-          ini_head = self.q2e(h_rot)
-          initial_head = (ini_head.y,ini_head.x)
+ #         ini_head = self.q2e(h_rot)
+ #         initial_head = (ini_head.y,ini_head.x)
           while not rospy.is_shutdown():
                 now = rospy.Time(0)
                 try:
-                    (l_trans2,l_rot2) = listener2.lookupTransform('/Spine', '/LeftHand', now)
-                    (r_trans2,r_rot2) = listener2.lookupTransform('/Spine', '/RightHand', now)
-                    (h_trans2,h_rot2) = listener2.lookupTransform("/Spine", "/Head", now) 
+                    (l_trans2,l_rot2) = listener2.lookupTransform("/LHR_23815562", "/LHR_FF4B1941", now)
+                    (r_trans2,r_rot2) = listener2.lookupTransform("/LHR_23815562", "/LHR_F5EB3B42", now)
+#                    (h_trans2,h_rot2) = listener2.lookupTransform("/Spine", "/Head", now) 
                 except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
                     continue
 
@@ -81,12 +72,12 @@ class Tele():
                 global ini_p
 
                 L_dis = [(l_trans2[2] - initial_left[0]), #どれだけうごいたか 
-                         (l_trans2[0] - initial_left[1]),
-                         (l_trans2[1] - initial_left[2])]
+                         (l_trans2[1] - initial_left[1]),
+                         -(l_trans2[0] - initial_left[2])]
 
                 R_dis = [(r_trans2[2] - initial_right[0]), #どれだけうごいたか 
-                         (r_trans2[0] - initial_right[1]),
-                         (r_trans2[1] - initial_right[2])]
+                         (r_trans2[1] - initial_right[1]),
+                         -(r_trans2[0] - initial_right[2])]
 
 #---------------------------------------------------------------------------------
                 global low_filter
@@ -98,15 +89,15 @@ class Tele():
                 RTP = [round((ini_p[3]+R_dis[0]+low_filter[3])/2,2),
                        round((ini_p[4]+R_dis[1]+low_filter[4])/2,2),
                        round((ini_p[5]+R_dis[2]+low_filter[5])/2,2)]
-                p_data.data = [1.1*LTP[0],1.1*LTP[1],1.2*LTP[2],RTP[0],RTP[1],1.1*RTP[2]]
+                p_data.data = [LTP[0],LTP[1],LTP[2],RTP[0],RTP[1],RTP[2]]
                 self.pub_p.publish(p_data)
-
+                """
                 N_head_d = self.q2e(h_rot2)
                 N_head = [N_head_d.y,N_head_d.x]
 
                 HeaD= [N_head[0]-initial_head[0],
                        N_head[1]-initial_head[1]]
- 
+                """
 #----------------------------------------------------
                 if -0.292 > LTP[0]: #前後
                   LTP[0] =-0.292
@@ -138,6 +129,7 @@ class Tele():
                 elif RTP[2] > 0.600:
                    RTP[2] = 0.600
 #----------------------------------------------------
+                """
                 if HeaD[0] < -0.3:
                    HeaD[0] = -0.3
                 elif HeaD[0] > 0.3:
@@ -147,17 +139,18 @@ class Tele():
                    HeaD[1] = -0.3
                 elif HeaD[1] > 0.3:
                      HeaD[1] = 0.3
+                """
 #---------------------------------------------------------------------------------
                 global ini_ang
                 robot.setTargetPose("larm",LTP, ini_ang,0.1)
                 robot.setTargetPose("rarm",RTP, ini_ang,0.1)
-                ros.set_joint_angles_rad("head",[HeaD[0],HeaD[1]],duration=0.3,wait=False) 
+#                ros.set_joint_angles_rad("head",[HeaD[0],HeaD[1]],duration=0.3,wait=False) 
                 rospy.sleep(0.3)
                 #ローパスフィルター_アップデート
                 r_cur_p = robot.getCurrentPosition("RARM_JOINT5")
                 l_cur_p = robot.getCurrentPosition("LARM_JOINT5")
                 low_filter = [l_cur_p[0], l_cur_p[1], l_cur_p[2], r_cur_p[0], r_cur_p[1], r_cur_p[2]]
-                base_head = [HeaD[0],HeaD[1]]
+#                base_head = [HeaD[0],HeaD[1]]
                 a_data = str(robot.getJointAngles())
                 self.pub.publish(a_data)
 if __name__ == '__main__':
