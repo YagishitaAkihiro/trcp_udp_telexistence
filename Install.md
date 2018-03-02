@@ -1,5 +1,5 @@
 # 必要機材
-Ubuntu 14.04(ros-indigoはインストール済み) ×2
+Ubuntu 14.04(ros-indigoはインストール済み) ×2  
 Nextage open  
 VIVE or perception Neuron  
 ※Perception Neuronの場合
