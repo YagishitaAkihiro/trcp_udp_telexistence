@@ -10,14 +10,14 @@
 ## コマンド
 #### 操縦者側
 ###### Hiroのシミュレータ起動
-'rtmlaunch hironx_ros_bridge hironx_ros_bridge_simulation.launch'
+$ rtmlaunch hironx_ros_bridge hironx_ros_bridge_simulation.launch
 ###### moveit起動
-'roslaunch hironx_moveit_config moveit_planning_execution.launch'
+$ roslaunch hironx_moveit_config moveit_planning_execution.launch
 ###### 操縦方法の選択
 VIVEかPerception Neuronを選択
 ###### windowsのディスプレイノード
-'rosrun trcp_udp_telexistence joint_publisher.py'
+$ rosrun trcp_udp_telexistence joint_publisher.py
 ###### 送信する際の関節角の整理用ノード
-'rosrun trcp_udp_telexistence angle_publisher.py'
+$ rosrun trcp_udp_telexistence angle_publisher.py
 ###### udpサーバーに送信するノード
-'rosrun trcp_udp_telexistence send_angle.py'
+$ rosrun trcp_udp_telexistence send_angle.py
