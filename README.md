@@ -25,6 +25,6 @@ steamの起動/steamvrの起動/viveの認証
 ###### udpサーバーに送信するノード
 `$ rosrun trcp_udp_telexistence send_angle.py`
 #### ロボット側
-`$ roslaunch hironx_ros_bridge hironx_ros_bridge_real.launch nameserver:=hiro`
-`$ roslaunch hironx_moveit_config moveit_planning_execution.launch`
-`$ rosrun trcp_udp_telexistence rec_angle.py --host hiro`
+`$ roslaunch hironx_ros_bridge hironx_ros_bridge_real.launch nameserver:=hiro`  
+`$ roslaunch hironx_moveit_config moveit_planning_execution.launch`  
+`$ rosrun trcp_udp_telexistence rec_angle.py --host hiro`  
