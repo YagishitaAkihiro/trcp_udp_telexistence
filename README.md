@@ -10,7 +10,7 @@
 ## コマンド
 #### 操縦者側
 ###### Hiroのシミュレータ起動
-$ rtmlaunch hironx_ros_bridge hironx_ros_bridge_simulation.launch
+'$ rtmlaunch hironx_ros_bridge hironx_ros_bridge_simulation.launch'
 ###### moveit起動
 $ roslaunch hironx_moveit_config moveit_planning_execution.launch
 ###### 操縦方法の選択
