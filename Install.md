@@ -8,7 +8,7 @@ windows(7以降)＆Visual Studio(2015以降)
 ##  VIVE用  
 [ここ](http://bluelet.sakura.ne.jp/db/2017/12/11/post-57/)を参照に  
 依存関係のインストール  
-`sudo apt-get install steam libsdl2-dev libvulkan-dev libudev-dev libssl-dev zlib1g-dev python-pip`
+`sudo apt-get install steam libsdl2-dev libvulkan-dev libudev-dev libssl-dev zlib1g-dev python-pip`  
 `sudo apt-get install libxtst6:i386 libxrandr-dev:i386 libglib2.0-dev:i386 libgtk2.0-0:i386 libpulse0:i386`  
 SteamVRのインストール  
 `steam://run/250820` からSteamVRをインストール  
