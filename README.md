@@ -15,7 +15,7 @@
 `$ roslaunch hironx_moveit_config moveit_planning_execution.launch`
 ###### 操縦方法VIVE/Perception Neuronを選択
 ###### VIVE
-steamの起動/steamvrの起動/viveの認証  
+`steamの起動/steamvrの起動/viveの認証`  
 ここでviveの認証が切れるとnodeの際面倒なので必ずやっておくこと。  
 `$ roslaunch vive_tracker vive_tracker.launch`
 ###### windowsのディスプレイノード
