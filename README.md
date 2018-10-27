@@ -17,9 +17,9 @@
 ###### VIVE
 `steamの起動/steamvrの起動/viveの認証`  
 ここでviveの認証が切れるとnodeの際面倒なので必ずやっておくこと。  
-`$ roslaunch vive_tracker vive_tracker.launch`
-######シミュレーターでのテレイグジスタンスノード起動######
-`$ rosrun trcp_udp_telexistence vive_telexistence.py`
+`$ roslaunch vive_tracker vive_tracker.launch`  
+###### シミュレーターでのテレイグジスタンスノード起動  
+`$ rosrun trcp_udp_telexistence vive_telexistence.py`  
 ###### windowsのディスプレイノード
 `$ rosrun trcp_udp_telexistence joint_publisher.py`
 ###### udpサーバーに送信するノード
